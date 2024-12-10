@@ -24,6 +24,9 @@ namespace MVC.Models
         [Required]
         public int Age { get; set; }
 
+        public string? Email { get; set; }
+        public string? Password { get; set; }
+
         [Required]
         public Subject Subject { get; set; }
     }
