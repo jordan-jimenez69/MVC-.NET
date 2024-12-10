@@ -1,0 +1,34 @@
+﻿@model MVC.Models.Student
+
+<h1>Créer un nouvel élève</h1>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Name" class="form-label">Nom</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FirstName" class="form-label">Prénom</label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Age" class="form-label"></label>
+        <input asp-for="Age" class="form-control" type="number" />
+        <span asp-validation-for="Age" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Major" class="form-label">Spécialité</label>
+        <select asp-for="Major" class="form-control" asp-items="Html.GetEnumSelectList<MVC.Models.Major>()">
+            <option value="">-- Sélectionnez une spécialité --</option>
+        </select>
+        <span asp-validation-for="Major" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Créer</button>
+    <a asp-action="Index" class="btn btn-secondary">Retour</a>
+</form>
