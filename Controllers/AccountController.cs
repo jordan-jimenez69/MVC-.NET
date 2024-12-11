@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Mvc;
 using MVC.Models;
 using MVC.Data;
+using System.Linq;
 
 namespace MVC.Controllers
 {
@@ -16,61 +14,27 @@ namespace MVC.Controllers
             _context = context;
         }
 
-        public IActionResult Register()
-        {
-            return View();
-        }
-
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Register(Teacher teacher)
+        public IActionResult Login(string email, string password)
         {
-            if (ModelState.IsValid)
+            // Rechercher l'utilisateur dans la base de données
+            var user = _context.Teachers.FirstOrDefault(u => u.Email == email && u.Password == password);
+
+            if (user != null)
             {
-                // Ajouter l'enseignant à la base de données
-                _context.Teachers.Add(teacher);
-                _context.SaveChanges();
-                return RedirectToAction("Login");
-            }
-            return View(teacher);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Login(string email, string password)
-        {
-            var teacher = _context.Teachers.FirstOrDefault(t => t.Email == email && t.Password == password);
-            if (teacher != null)
-            {
-                // Créer les revendications pour l'utilisateur
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, teacher.Name),
-                    new Claim(ClaimTypes.Email, teacher.Email),
-                    new Claim("Role", "Teacher")
-                };
-
-                var identity = new ClaimsIdentity(claims, "CookieAuth");
-                var principal = new ClaimsPrincipal(identity);
-
-                // Connexion utilisateur
-                await HttpContext.SignInAsync("CookieAuth", principal);
-
-                return RedirectToAction("Index", "Student"); // Redirige vers la liste des étudiants
+                // Si l'utilisateur existe, rediriger vers une page personnalisée
+                return RedirectToAction("Index", "Student");
             }
 
+            // Si les informations sont incorrectes, afficher une erreur
             ViewBag.Error = "Email ou mot de passe incorrect.";
             return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync("CookieAuth");
-            return RedirectToAction("Login");
         }
     }
 }

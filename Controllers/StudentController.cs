@@ -20,13 +20,6 @@ namespace MVC.Controllers
             return View(students);
         }
 
-        public async Task<IActionResult> Details(int id)
-        {
-            var student = await _context.Students.FindAsync(id);
-            if (student == null) return NotFound();
-            return View(student);
-        }
-
         public IActionResult Create()
         {
             return View();
