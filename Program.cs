@@ -3,21 +3,13 @@ using MVC.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuration de la connexion à MariaDB/MySQL
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        new MySqlServerVersion(new Version(10, 5, 0))
+    ));
 
-// Ajouter les services pour les contrôleurs avec vues
 builder.Services.AddControllersWithViews();
-
-// Ajouter l'authentification basée sur les cookies
-builder.Services.AddAuthentication("CookieAuth")
-    .AddCookie("CookieAuth", options =>
-    {
-        options.LoginPath = "/Account/Login";
-        options.AccessDeniedPath = "/Account/AccessDenied";
-    });
 
 var app = builder.Build();
 

@@ -16,8 +16,12 @@ namespace MVC.Controllers
             _context = context;
         }
 
-        [HttpGet]
         public IActionResult Register()
+        {
+            return View();
+        }
+
+        public IActionResult Login()
         {
             return View();
         }
@@ -33,12 +37,6 @@ namespace MVC.Controllers
                 return RedirectToAction("Login");
             }
             return View(teacher);
-        }
-
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
         }
 
         [HttpPost]
