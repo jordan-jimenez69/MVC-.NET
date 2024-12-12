@@ -16,19 +16,6 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Age" class="form-label"></label>
-        <input asp-for="Age" class="form-control" type="number" />
-        <span asp-validation-for="Age" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Subject" class="form-label">Sujet</label>
-        <select asp-for="Subject" class="form-control" asp-items="Html.GetEnumSelectList<MVC.Models.Subject>()">
-            <option value="">-- Sélectionnez un département --</option>
-        </select>
-        <span asp-validation-for="Subject" class="text-danger"></span>
-    </div>
-    <div class="form-group">
         <label>Email</label>
         <input type="email" name="Email" class="form-control" required />
     </div>

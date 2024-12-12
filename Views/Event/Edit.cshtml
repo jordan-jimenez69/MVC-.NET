@@ -1,6 +1,6 @@
-﻿@model MVC.Models.Student
+﻿@model MVC.Models.Teacher
 
-<h1>Modifier les informations de l'étudiant</h1>
+<h1>Modifier un enseignant</h1>
 
 <form asp-action="Edit" method="post">
     <input type="hidden" asp-for="Id" />
@@ -15,12 +15,6 @@
         <label asp-for="FirstName" class="form-label">Prénom</label>
         <input asp-for="FirstName" class="form-control" />
         <span asp-validation-for="FirstName" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Major" class="form-label">Spécialité</label>
-        <select asp-for="Major" class="form-select" asp-items="Html.GetEnumSelectList<Major>()"></select>
-        <span asp-validation-for="Major" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-success">Sauvegarder</button>

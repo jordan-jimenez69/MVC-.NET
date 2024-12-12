@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+<h2>Liste des événements</h2>
+
+@if (User.IsInRole("Teacher") || User.IsInRole("Student"))
+{
+    <a asp-action="Create" class="btn btn-primary" style="display:@(User.IsInRole("Teacher") ? "inline" : "none")">Créer un événement</a>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var eventItem in Model)
+        {
+            <tr>
+                <td>@eventItem.Title</td>
+                <td>@eventItem.Description</td>
+                <td>@eventItem.Date.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@eventItem.Id" class="btn btn-info">Détails</a>
+
+                    @if (User.IsInRole("Teacher"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@eventItem.Id" class="btn btn-warning">Modifier</a>
+                        <form asp-action="Delete" asp-route-id="@eventItem.Id" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

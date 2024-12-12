@@ -1,40 +1,100 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using MVC.Models;
-using MVC.Data;
-using System.Linq;
 
-namespace MVC.Controllers
+public class AccountController : Controller
 {
-    public class AccountController : Controller
+    private readonly SignInManager<Teacher> _signInManager;
+    private readonly UserManager<Teacher> _userManager;
+
+    public AccountController(SignInManager<Teacher> signInManager, UserManager<Teacher> userManager)
     {
-        private readonly AppDbContext _context;
+        _signInManager = signInManager;
+        _userManager = userManager;
+    }
 
-        public AccountController(AppDbContext context)
+    [HttpGet]
+    public IActionResult Register()
+    {
+        return View(new AccountModel());
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Register(AccountModel model)
+    {
+        if (!ModelState.IsValid)
         {
-            _context = context;
+            return View(model);
         }
 
-        [HttpGet]
-        public IActionResult Login()
+        // Créer un nouvel utilisateur
+        var user = new Teacher
         {
-            return View();
-        }
+            FirstName = model.FirstName,
+            Name = model.Name,
+            UserName = model.FirstName // Utilisez un identifiant unique ici si nécessaire
+        };
 
-        [HttpPost]
-        public IActionResult Login(string email, string password)
+        // Créer l'utilisateur
+        var result = await _userManager.CreateAsync(user, model.PasswordHashed);
+
+        // Si la création a échoué, ajouter les erreurs au modèle et retourner la vue
+        if (!result.Succeeded)
         {
-            // Rechercher l'utilisateur dans la base de données
-            var user = _context.Teachers.FirstOrDefault(u => u.Email == email && u.Password == password);
-
-            if (user != null)
+            foreach (var error in result.Errors)
             {
-                // Si l'utilisateur existe, rediriger vers une page personnalisée
-                return RedirectToAction("Index", "Student");
+                ModelState.AddModelError(string.Empty, error.Description);
             }
-
-            // Si les informations sont incorrectes, afficher une erreur
-            ViewBag.Error = "Email ou mot de passe incorrect.";
-            return View();
+            return View(model);
         }
+
+        // Ajouter l'utilisateur au rôle "Teacher"
+        var roleResult = await _userManager.AddToRoleAsync(user, "Teacher");
+
+        // Si l'ajout du rôle échoue, ajouter les erreurs au modèle et retourner la vue
+        if (!roleResult.Succeeded)
+        {
+            foreach (var error in roleResult.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View(model);
+        }
+
+        // Connexion automatique après l'inscription
+        await _signInManager.SignInAsync(user, isPersistent: false);
+
+        // Rediriger vers la page des événements si tout est réussi
+        return RedirectToAction("Index", "Event");
+    }
+
+    [HttpGet]
+    public IActionResult Login()
+    {
+        return View(new LoginModel());
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var result = await _signInManager.PasswordSignInAsync(
+            model.UserName,
+            model.PasswordHashed,
+            false,
+            false
+        );
+
+        if (result.Succeeded)
+        {
+            return RedirectToAction("Index", "Event");
+        }
+
+        ModelState.AddModelError(string.Empty, "Nom d'utilisateur ou mot de passe incorrect.");
+        return View(model);
     }
 }

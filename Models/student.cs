@@ -13,9 +13,6 @@ namespace MVC.Models
         [Required]
         public string? FirstName { get; set; }
 
-        [Range(1, 120)]
-        public int Age { get; set; }
-
         [Required]
         public Major Major { get; set; }
     }

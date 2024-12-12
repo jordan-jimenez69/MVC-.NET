@@ -1,42 +1,32 @@
-﻿@model MVC.Models.Teacher
+﻿@model MVC.Models.AccountModel
 
-<h1>Créer un nouvel enseignant</h1>
+<div class="container py-4">
+    <div class="d-flex justify-content-center">
 
-<form asp-action="Create" method="post">
-    <div class="form-group">
-        <label asp-for="Name" class="form-label">Nom</label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
+                <div class="container">
+                    <h2>Inscription</h2>
 
-    <div class="form-group">
-        <label asp-for="FirstName" class="form-label">Prénom</label>
-        <input asp-for="FirstName" class="form-control" />
-        <span asp-validation-for="FirstName" class="text-danger"></span>
-    </div>
+            <form asp-controller="Account" asp-action="Register" method="post">
+                <div class='mb-3 w-50'>
+                    <input type="text" name="Name" placeholder="Name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class='mb-3 w-50'>
+                    <input type="text" name="FirstName" placeholder="FirstName" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class='mb-3 w-50'>
+                    <input type="password" name="PasswordHashed" placeholder="Password" />
+                    <span asp-validation-for="PasswordHashed" class="text-danger"></span>
+                </div>
+                <div class='mb-3 w-50'>
+                    <input type="password" name="ConfirmedPassword" placeholder="Confirmed Password" />
+                    <span asp-validation-for="ConfirmedPassword" class="text-danger"></span>
+                </div>
 
-    <div class="form-group">
-        <label asp-for="Age" class="form-label"></label>
-        <input asp-for="Age" class="form-control" type="number" />
-        <span asp-validation-for="Age" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Subject" class="form-label">Sujet</label>
-        <select asp-for="Subject" class="form-control" asp-items="Html.GetEnumSelectList<MVC.Models.Subject>()">
-            <option value="">-- Sélectionnez un département --</option>
-        </select>
-        <span asp-validation-for="Subject" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label>Email</label>
-        <input type="email" name="Email" class="form-control" required />
-    </div>
-    <div class="form-group">
-        <label>Mot de passe</label>
-        <input type="password" name="Password" class="form-control" required />
-    </div>
-
-    <button type="submit" class="btn btn-success">Créer</button>
-    <a asp-action="Index" class="btn btn-secondary">Retour</a>
-</form>
+                <input type="submit" value="Create" class="btn btn-primary">
+            </form>
+                </div>
+                    <a class="link link-secondary" asp-action="Login" asp-controller="Account">Login</a>
+            </div>
+        </div>

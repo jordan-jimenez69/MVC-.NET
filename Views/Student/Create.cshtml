@@ -16,12 +16,6 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Age" class="form-label"></label>
-        <input asp-for="Age" class="form-control" type="number" />
-        <span asp-validation-for="Age" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
         <label asp-for="Major" class="form-label">Spécialité</label>
         <select asp-for="Major" class="form-control" asp-items="Html.GetEnumSelectList<MVC.Models.Major>()">
             <option value="">-- Sélectionnez une spécialité --</option>
