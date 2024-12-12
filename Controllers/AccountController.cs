@@ -97,4 +97,11 @@ public class AccountController : Controller
         ModelState.AddModelError(string.Empty, "Nom d'utilisateur ou mot de passe incorrect.");
         return View(model);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
+        return RedirectToAction("Index", "Home");
+    }
 }
