@@ -32,13 +32,12 @@ public class AccountController : Controller
         {
             FirstName = model.FirstName,
             Name = model.Name,
-            UserName = model.FirstName // Utilisez un identifiant unique ici si nécessaire
+            UserName = model.FirstName
         };
 
         // Créer l'utilisateur
         var result = await _userManager.CreateAsync(user, model.PasswordHashed);
 
-        // Si la création a échoué, ajouter les erreurs au modèle et retourner la vue
         if (!result.Succeeded)
         {
             foreach (var error in result.Errors)

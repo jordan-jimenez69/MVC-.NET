@@ -1,22 +1,33 @@
-﻿@model MVC.Models.Teacher
+﻿@model MVC.Models.Event
 
-<h1>Modifier un enseignant</h1>
+<h1>Créer un nouvel event</h1>
 
 <form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
-
-    <div class="mb-3">
-        <label asp-for="Name" class="form-label">Nom</label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+    <div class="form-group">
+        <label asp-for="Title" class="form-label">Titre</label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
     </div>
 
-    <div class="mb-3">
-        <label asp-for="FirstName" class="form-label">Prénom</label>
-        <input asp-for="FirstName" class="form-control" />
-        <span asp-validation-for="FirstName" class="text-danger"></span>
+    <div class="form-group">
+        <label asp-for="Description" class="form-label">Description</label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
     </div>
+
+    <div class="form-group">
+        <label asp-for="Date" class="form-date">Date</label>
+        <input asp-for="Date" class="form-control" type="date" />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Location" class="form-label">Localisation</label>
+        <input asp-for="Location" class="form-control" type="number" />
+        <span asp-validation-for="Location" class="text-danger"></span>
+    </div>
+
 
     <button type="submit" class="btn btn-success">Sauvegarder</button>
-    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+    <a asp-action="Index" class="btn btn-secondary">Retour</a>
 </form>
