@@ -29,7 +29,7 @@
                     @if (User.IsInRole("Teacher"))
                     {
                         <a asp-action="Edit" asp-route-id="@eventItem.Id" class="btn btn-warning">Modifier</a>
-                        <form asp-action="Delete" asp-route-id="@eventItem.Id" method="post" style="display:inline;">
+                        <form asp-action="Delete" asp-route-id="@eventItem.Id" method="post" onsubmit="return confirm('Voulez-vous vraiment supprimer cet événement ?');" style="display:inline;">
                             <button type="submit" class="btn btn-danger">Supprimer</button>
                         </form>
                     }

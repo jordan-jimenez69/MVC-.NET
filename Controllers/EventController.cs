@@ -16,12 +16,13 @@ namespace MVC.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = "Teacher")]
+        [Authorize(Roles = "Teacher,Student")]
         public async Task<IActionResult> Index()
         {
-            var events = await _context.Events.ToListAsync(); // Remplacez "event" par "events"
+            var events = await _context.Events.ToListAsync();
             return View(events);
         }
+
 
         public async Task<IActionResult> Details(int id)
         {
