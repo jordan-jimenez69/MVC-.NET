@@ -15,8 +15,9 @@ public class TeacherController : Controller
     {
         _userManager = userManager;
     }
+
     [HttpGet]
-    public async Task<ActionResult> Index()
+    public ActionResult Index()
     {
         var teachers = _userManager.Users;
         return View(teachers.ToList());
