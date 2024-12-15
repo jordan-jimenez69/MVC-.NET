@@ -1,28 +1,28 @@
 ﻿@model MVC.Models.Student
 
-<h1>Créer un nouvel élève</h1>
+<h2>Créer un étudiant</h2>
 
 <form asp-action="Create" method="post">
     <div class="form-group">
-        <label asp-for="Name" class="form-label">Nom</label>
+        <label asp-for="Name" class="control-label"></label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
-
     <div class="form-group">
-        <label asp-for="FirstName" class="form-label">Prénom</label>
+        <label asp-for="FirstName" class="control-label"></label>
         <input asp-for="FirstName" class="form-control" />
         <span asp-validation-for="FirstName" class="text-danger"></span>
     </div>
-
     <div class="form-group">
-        <label asp-for="Major" class="form-label">Spécialité</label>
-        <select asp-for="Major" class="form-control" asp-items="Html.GetEnumSelectList<MVC.Models.Major>()">
-            <option value="">-- Sélectionnez une spécialité --</option>
-        </select>
+        <label asp-for="Major" class="control-label"></label>
+        <select asp-for="Major" asp-items="Html.GetEnumSelectList<MVC.Models.Major>()" class="form-control"></select>
         <span asp-validation-for="Major" class="text-danger"></span>
     </div>
-
-    <button type="submit" class="btn btn-success">Créer</button>
-    <a asp-action="Index" class="btn btn-secondary">Retour</a>
+    <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input type="password" name="password" class="form-control" />
+    </div>
+    <div class="form-group mt-3">
+        <input type="submit" value="Créer" class="btn btn-primary" />
+    </div>
 </form>

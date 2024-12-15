@@ -22,5 +22,15 @@ namespace MVC.Models
         [Compare("PasswordHashed", ErrorMessage = "Le mot de passe et sa confirmation ne correspondent pas.")]
         [Display(Name = "Confirmer le mot de passe")]
         public string? ConfirmedPassword { get; set; }
+
+        [Required(ErrorMessage = "Le rôle est obligatoire.")]
+        [Display(Name = "Rôle")]
+        public RoleType Role { get; set; } // Ajout de la propriété Role
+    }
+
+    public enum RoleType
+    {
+        Teacher,
+        Student
     }
 }

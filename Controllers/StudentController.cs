@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC.Data;
 using MVC.Models;
@@ -8,10 +9,14 @@ namespace MVC.Controllers
     public class StudentController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<Student> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public StudentController(AppDbContext context)
+        public StudentController(AppDbContext context, UserManager<Student> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task<IActionResult> Index()
@@ -26,13 +31,35 @@ namespace MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Student student)
+        public async Task<IActionResult> Create(Student student, string password)
         {
             if (ModelState.IsValid)
             {
-                _context.Students.Add(student);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // Création de l'utilisateur étudiant
+                var result = await _userManager.CreateAsync(student, password);
+
+                if (result.Succeeded)
+                {
+                    // Assurez-vous que le rôle Student existe dans la base de données
+                    if (!await _roleManager.RoleExistsAsync("Student"))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole("Student"));
+                    }
+
+                    // Attribution du rôle Student
+                    await _userManager.AddToRoleAsync(student, "Student");
+
+                    _context.Students.Add(student);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
+
+                // Gestion des erreurs
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
             return View(student);
         }

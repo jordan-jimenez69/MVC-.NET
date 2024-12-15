@@ -27,7 +27,6 @@ public class AccountController : Controller
             return View(model);
         }
 
-        // Créer un nouvel utilisateur
         var user = new Teacher
         {
             FirstName = model.FirstName,
@@ -35,7 +34,7 @@ public class AccountController : Controller
             UserName = model.FirstName
         };
 
-        // Créer l'utilisateur
+        // Créer l'utilisateur avec le mot de passe
         var result = await _userManager.CreateAsync(user, model.PasswordHashed);
 
         if (!result.Succeeded)
@@ -47,10 +46,9 @@ public class AccountController : Controller
             return View(model);
         }
 
-        // Ajouter l'utilisateur au rôle "Teacher"
-        var roleResult = await _userManager.AddToRoleAsync(user, "Teacher");
+        var roleName = model.Role.ToString();
+        var roleResult = await _userManager.AddToRoleAsync(user, roleName);
 
-        // Si l'ajout du rôle échoue, ajouter les erreurs au modèle et retourner la vue
         if (!roleResult.Succeeded)
         {
             foreach (var error in roleResult.Errors)
@@ -60,12 +58,11 @@ public class AccountController : Controller
             return View(model);
         }
 
-        // Connexion automatique après l'inscription
         await _signInManager.SignInAsync(user, isPersistent: false);
 
-        // Rediriger vers la page des événements si tout est réussi
         return RedirectToAction("Index", "Event");
     }
+
 
     [HttpGet]
     public IActionResult Login()
